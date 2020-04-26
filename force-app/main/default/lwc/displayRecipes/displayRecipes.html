@@ -1,27 +1,25 @@
 <template>
-    <template if:true={recipes}>
-        <template for:each={recipes} for:item="recipe">
-            
-            <lightning-card key={recipe.id} title={recipe.title}>
-             
-                <div class="slds-align_absolute-center">
-                    <img src={recipe.image} alt={recipe.title} class="recipeImage" />
-                </div>
-                <br />
-                <p class="slds-p-horizontal_small">
-                    <!--Title: {recipe.title} <br />--> 
-                    Protein : {recipe.fat} <br />
-                    Calories : {recipe.calories} <br />
-                    Carbohydrates : {recipe.carbs} <br />
-                    Fat : {recipe.fat} <br />
-                </p>
-                <p slot="footer">
-                    <lightning-button key={recipe.id} label="Make Favorite" slot="actions" onclick={handleFavorite}></lightning-button>
-                </p>
-            </lightning-card>
-            </template> 
-    </template>
-    <template if:true={noRecipes}>
-        <p>Uh-Oh, we hit a snag ! No recipes returned for the given range :( Try again, will you? :)</p>
-    </template>
+    <template for:each={recipes} for:item="recipe">
+        <div class="slds-box slds-box_small" key={recipe.id}>
+        <!--<lightning-card>-->
+            <h1 class="slds-align_absolute-center slds-text-heading_medium"><b>{recipe.title}</b></h1><br/>
+            <img src={recipe.image} alt={recipe.title} class="slds-align_absolute-center" /><br />
+            <p class="slds-p-horizontal_small slds-align_absolute-center">
+                <!--<span class="slds-align_absolute-center slds-text-heading_medium">
+                    <strong>{recipe.title}</strong>
+                </span><br />-->
+                <span class="slds-text-heading_medium">
+                    <strong>Protein :</strong> {recipe.fat} <br />
+                    <strong>Calories :</strong> {recipe.calories} <br />
+                    <strong>Carbohydrates :</strong> {recipe.carbs} <br />
+                    <strong>Fat : </strong> {recipe.fat} <br />
+                </span> 
+            </p>
+            <!--<p slot="footer">
+                <lightning-button key={recipe.id} label="Make Favorite" slot="actions" onclick={handleFavorite}></lightning-button>
+            </p>-->
+        <!--</lightning-card>-->
+    </div>
+    </template> 
+
 </template>

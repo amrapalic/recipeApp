@@ -1,30 +1,44 @@
 <template>
     <article class="slds-card">
-        
-        <div class="slds-card__body_inner">           
-        <lightning-card title="Get Recipes by Nutrients !">
-            
-            <lightning-combobox
-            name="nutrients"
-            label="Nutrients"
-            value={selectedNutrient}
-            placeholder="Select Nutrient"
-            options={options}
-            onchange={handleChange} ></lightning-combobox>
-
+        <div class="slds-card__body_inner">
+            <lightning-card title="Get Recipes by Nutrients !">
+                <lightning-combobox
+                    name="nutrients"
+                    label="Nutrients"
+                    value={selectedNutrient}
+                    placeholder="Select Nutrient"
+                    options={options}
+                    onchange={handleChange} ></lightning-combobox>
             <p class="slds-p-horizontal_small">
                 <lightning-input type="text" name="min" id="inputMin" label="Minimum" onchange={handleInput}></lightning-input>
                 <lightning-input type="text" name="max" id="inputMax" label="Maximum" onchange={handleInput}></lightning-input>
             </p>
-        <br />
-        <lightning-button label="Go!" slot="actions" onclick={handleClick}></lightning-button>
-        <lightning-button label="Reset" slot="actions" onclick={handleReset}></lightning-button>
-    
-        <p slot="footer">Please Provide Nutrients Range! Note : Unit of Measurement is Grams.</p>
+            <br />
+            <lightning-button label="Go!" slot="actions" onclick={handleClick}></lightning-button>
+            <lightning-button label="Reset" slot="actions" onclick={handleReset}></lightning-button>
+            
+            <p slot="footer" class="slds-text-heading_medium">
+                <template if:true={inputMode}>
+                    Please Provide Nutrients Range! Note : Unit of Measurement is Grams.
+                </template>
+                <template if:true={recipesLoaded}>
+                    <div class="slds-text-color_success">
+                        Hootie-Hoo ! Hope you have a lip-smacking day :D
+                    </div>
+                </template>
+                <template if:true={noRecipes}>
+                    <div class="slds-text-color_error">
+                        Uh-Oh, we hit a snag ! No recipes returned for the given range :( Try again, will you? :)
+                    </div>
+                </template>
+            </p>
         </lightning-card>
+        <template if:true={recipesLoaded}>
+           
+                    <c-display-recipes recipes={recipes}></c-display-recipes>
+                 
+        </template>
     </div>
-    
-</article>
-    
-    
+
+    </article>
 </template>

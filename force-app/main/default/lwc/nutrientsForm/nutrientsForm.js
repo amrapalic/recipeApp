@@ -1,6 +1,5 @@
 import { LightningElement, track, api, wire } from 'lwc';
-import { CurrentPageReference } from 'lightning/navigation';
-import { fireEvent } from 'c/pubsub';
+//import { CurrentPageReference } from 'lightning/navigation';
 import getRecipesByCarbs from '@salesforce/apex/RecipeController.getRecipesByCarbs'; 
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
@@ -8,8 +7,10 @@ export default class NutrientsForm extends LightningElement {
     @track selectedNutrient;
     @track min;
     @track max;
-    @track maxMinValidation = false;
-    @wire(CurrentPageReference) pageRef;
+    @track recipesLoaded = false;
+    @track noRecipes = false;
+    @track inputMode = true;
+    //@wire(CurrentPageReference) pageRef;
     //@track isSelected = false;
     
     get options() {
@@ -33,18 +34,29 @@ export default class NutrientsForm extends LightningElement {
 
     handleReset(event) {
         //location.reload();
-        console.log(document.getElementById('inputMin'));
-        document.getElementById('inputMin').value = '';
-        document.getElementById('inputMax').value = '';
+        console.log('handling reset....');
+        //console.log(this.template.getElementById('inputMin'));
+        this.recipesLoaded = false;
+        this.noRecipes = false;
+        this.inputMode = true;
+        //this.template.getElementById('inputMin').value = '';
+        //this.template.getElementById('inputMax').value = '';
     }
 
     handleClick() {
         getRecipesByCarbs({nutrient:this.selectedNutrient,min:this.min, max:this.max})
             .then(result => {
-                console.log('recipes returned...');
-                this.recipes = result;
-                fireEvent(this.pageRef, 'recipesLoaded', this.recipes);
-                console.log(this.recipes);
+                console.log(result);
+                if(result.length !== 0) { 
+                    this.recipes = result;
+                    this.recipesLoaded = true;
+                    this.noRecipes = false;
+                    this.inputMode = false; 
+                }
+                else {
+                    this.inputMode = false;
+                    this.noRecipes = true;
+                }
                 
             })
             .catch(error => {
